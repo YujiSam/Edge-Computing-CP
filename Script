@@ -1,0 +1,54 @@
+// Define os pinos para os LEDs e o buzzer
+int ledG = 2; // Pino do LED verde
+int ledY = 3; // Pino do LED amarelo
+int ledR = 4; // Pino do LED vermelho
+int buzzer = 5; // Pino do buzzer
+
+void setup()
+{
+  // Inicializa a comunicação serial com uma taxa de transmissão de 9600 bps
+  Serial.begin(9600);
+
+  // Define os pinos como saída
+  pinMode(ledG, OUTPUT);
+  pinMode(ledY, OUTPUT);
+  pinMode(ledR, OUTPUT);
+  pinMode(buzzer, OUTPUT);
+}
+
+void loop()
+{
+  // Lê o valor do sensor de luz (LDR)
+  int LDR = analogRead(A0);
+
+  // Imprime o valor lido do LDR no monitor serial
+  Serial.println(LDR);
+
+  // Aguarda 500 milissegundos
+  delay(500);
+
+  // Verifica o valor lido do LDR e realiza ações com base nesse valor
+  if (LDR <= 800)
+  {
+    // Se o valor do LDR for menor ou igual a 800, acende o LED verde e apaga os outros LEDs
+    digitalWrite(ledG, HIGH);
+    digitalWrite(ledY, LOW);
+    digitalWrite(ledR, LOW);
+  }
+  else if (LDR >= 850 && LDR < 930)
+  {
+    // Se o valor do LDR estiver entre 850 e 929, acende o LED amarelo e emite um tom no buzzer
+    digitalWrite(ledG, LOW);
+    digitalWrite(ledY, HIGH);
+    digitalWrite(ledR, LOW);
+    tone(buzzer, 1500, 300); // Emite um tom de 1500 Hz por 300 milissegundos
+  }
+  else if (LDR >= 930)
+  {
+    // Se o valor do LDR for maior ou igual a 930, acende o LED vermelho e emite um tom no buzzer
+    digitalWrite(ledG, LOW);
+    digitalWrite(ledY, LOW);
+    digitalWrite(ledR, HIGH);
+    tone(buzzer, 1500, 300); // Emite um tom de 1500 Hz por 300 milissegundos
+  }
+}
